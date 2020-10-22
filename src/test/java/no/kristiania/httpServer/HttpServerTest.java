@@ -9,6 +9,9 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.sql.SQLException;
 import java.util.Date;
@@ -92,7 +95,8 @@ class HttpServerTest {
     @Test
     void shouldPostNewMember() throws IOException, SQLException {
         HttpServer server = new HttpServer(10008, dataSource);
-        HttpClient client = new HttpClient("localhost", 10008, "/api/members", "POST", "first_name=Eirik&email=test@email.com");
+        HttpClient client = new HttpClient("localhost", 10008, "/api/members", "POST", "first_name=Eirik&last_name=Test&email=test@email.com");
+
         assertEquals(200, client.getStatusCode());
         assertThat(server.getProjectMembers())
                 .extracting(ProjectMember::getFirstName)

@@ -12,6 +12,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,10 +57,11 @@ public class HttpServer {
 
 
             ProjectMember projectMember = new ProjectMember();
-            projectMember.setFirstName(requestParameter.getParameter("first_name"));
-            projectMember.setLastName(requestParameter.getParameter("last_name"));
-            projectMember.setEmail(URLDecoder.decode(requestParameter.getParameter("email")));
+            projectMember.setFirstName(URLDecoder.decode(requestParameter.getParameter("first_name"), StandardCharsets.UTF_8.name()));
+            projectMember.setLastName(URLDecoder.decode(requestParameter.getParameter("last_name"), StandardCharsets.UTF_8.name()));
+            projectMember.setEmail(URLDecoder.decode(requestParameter.getParameter("email"), StandardCharsets.UTF_8.name()));
             projectMemberDao.insert(projectMember);
+            System.out.println(projectMember.getFirstName());
 
             String body = "Okay";
             String response = "HTTP/1.1 200 OK\r\n" +

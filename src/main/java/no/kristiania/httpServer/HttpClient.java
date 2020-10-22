@@ -2,6 +2,8 @@ package no.kristiania.httpServer;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
