@@ -70,7 +70,7 @@ public class HttpServer {
                     "\r\n" +
                     body;
 
-            clientSocket.getOutputStream().write(response.getBytes());
+            clientSocket.getOutputStream().write(response.getBytes("UTF-8"));
         } else {
             if (requestPath.equals("/echo")) {
                 handleEchoRequest(clientSocket, requestTarget, questionPos);
@@ -92,7 +92,7 @@ public class HttpServer {
                         "\r\n" +
                         body;
                 // Write the response back to the client
-                clientSocket.getOutputStream().write(response.getBytes());
+                clientSocket.getOutputStream().write(response.getBytes("UTF-8"));
                 return;
             }
             ByteArrayOutputStream buffer = new ByteArrayOutputStream();
@@ -109,7 +109,7 @@ public class HttpServer {
                     "Content-Type: " + contentType + "\r\n" +
                     "\r\n";
 
-            clientSocket.getOutputStream().write(response.getBytes());
+            clientSocket.getOutputStream().write(response.getBytes("UTF-8"));
             clientSocket.getOutputStream().write(buffer.toByteArray());
         }
     }
@@ -128,7 +128,7 @@ public class HttpServer {
                 "\r\n" +
                 body;
 
-        clientSocket.getOutputStream().write(response.getBytes());
+        clientSocket.getOutputStream().write(response.getBytes("UTF-8"));
     }
 
     private void handleEchoRequest(Socket clientSocket, String requestTarget, int questionPos) throws IOException {
@@ -149,7 +149,7 @@ public class HttpServer {
                 "\r\n" +
                 body;
 
-        clientSocket.getOutputStream().write(response.getBytes());
+        clientSocket.getOutputStream().write(response.getBytes("UTF-8"));
     }
 
     public static void main(String[] args) throws IOException {
