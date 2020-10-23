@@ -1,7 +1,6 @@
 package no.kristiania.httpServer;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 import java.sql.SQLException;
 

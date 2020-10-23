@@ -2,13 +2,9 @@ package no.kristiania.httpServer;
 
 import no.kristiania.database.Project;
 import no.kristiania.database.ProjectDao;
-import no.kristiania.database.ProjectMember;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.Socket;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 
 public class ProjectPostController implements ControllerMcControllerface {

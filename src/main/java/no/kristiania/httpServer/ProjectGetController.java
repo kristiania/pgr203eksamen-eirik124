@@ -2,7 +2,6 @@ package no.kristiania.httpServer;
 
 import no.kristiania.database.Project;
 import no.kristiania.database.ProjectDao;
-import no.kristiania.database.ProjectMember;
 
 import java.io.IOException;
 import java.net.Socket;
