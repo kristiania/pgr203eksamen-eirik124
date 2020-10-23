@@ -47,4 +47,8 @@ public class ProjectDao {
             }
         }
     }
+
+    public Project retrieve(long id) {
+        return null;
+    }
 }
