@@ -1,5 +1,6 @@
 package no.kristiania.httpServer;
 
+import no.kristiania.database.ProjectDao;
 import no.kristiania.database.ProjectMember;
 import no.kristiania.database.ProjectMemberDao;
 import org.flywaydb.core.Flyway;
@@ -25,13 +26,17 @@ public class HttpServer {
     private static final Logger logger = LoggerFactory.getLogger(HttpServer.class);
     private ProjectMemberDao projectMemberDao;
 
-    private Map<String, ControllerMcControllerface> controllers = Map.of(
-            "/api/newProject", new ProjectPostController(),
-            "/api/projects", new ProjectGetController()
-    );
+    private Map<String, ControllerMcControllerface> controllers;
 
     public HttpServer(int port, DataSource dataSource) throws IOException {
         projectMemberDao = new ProjectMemberDao(dataSource);
+        ProjectDao projectDao = new ProjectDao(dataSource);
+
+        controllers = Map.of(
+                "/api/newProject", new ProjectPostController(projectDao),
+                "/api/projects", new ProjectGetController(projectDao)
+        );
+
         ServerSocket serverSocket = new ServerSocket(port);
 
         new Thread(() -> {
