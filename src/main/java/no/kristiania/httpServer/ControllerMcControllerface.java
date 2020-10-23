@@ -1,0 +1,9 @@
+package no.kristiania.httpServer;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.Socket;
+
+public interface ControllerMcControllerface {
+    void handle(HttpMessage request, Socket clientSocket) throws IOException;
+}

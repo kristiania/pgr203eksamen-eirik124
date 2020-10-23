@@ -95,7 +95,7 @@ class HttpServerTest {
     @Test
     void shouldPostNewMember() throws IOException, SQLException {
         HttpServer server = new HttpServer(10008, dataSource);
-        HttpClient client = new HttpClient("localhost", 10008, "/api/members", "POST", "first_name=Eirik&last_name=Test&email=test@email.com");
+        HttpClient client = new HttpClient("localhost", 10008, "/api/newProjectMember", "POST", "first_name=Eirik&last_name=Test&email=test@email.com");
 
         assertEquals(200, client.getStatusCode());
         assertThat(server.getProjectMembers())
@@ -115,6 +115,17 @@ class HttpServerTest {
 
         HttpClient client = new HttpClient("localhost", 10009, "/api/projectMembers");
         assertThat(client.getResponseBody()).contains("<li>Paal Anders Byenstuen, pl4nders@gmail.com</li>");
+    }
+
+    @Test
+    void shouldPostNewProject() throws IOException, SQLException {
+        HttpServer server = new HttpServer(10010, dataSource);
+        String requestBody = "project_name=ApplePay";
+        HttpClient postClient = new HttpClient("localhost", 10010, "/api/newProject", "POST", requestBody);
+        assertEquals(200, postClient.getStatusCode());
+
+        HttpClient getClient = new HttpClient("localhost", 10010, "/api/projects");
+        assertThat(getClient.getResponseBody()).contains("<li>ApplePay</li>");
     }
 
 }
