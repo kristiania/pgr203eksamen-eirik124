@@ -22,6 +22,8 @@ public class ProjectDaoTest {
     void shouldListAllProjects() {
         Project project1 = exampleProject();
         Project project2 = exampleProject();
+        projectDao.insert(project1);
+        projectDao.insert(project2);
         assertThat(projectDao.list())
                 .extracting(Project::getName)
                 .contains(project1.getName(), project2.getName());
