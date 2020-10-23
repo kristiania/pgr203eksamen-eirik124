@@ -5,6 +5,8 @@ import org.h2.jdbcx.JdbcDataSource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.sql.SQLException;
+
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 public class ProjectDaoTest {
@@ -19,7 +21,7 @@ public class ProjectDaoTest {
     }
 
     @Test
-    void shouldListAllProjects() {
+    void shouldListAllProjects() throws SQLException {
         Project project1 = exampleProject();
         Project project2 = exampleProject();
         projectDao.insert(project1);
@@ -31,7 +33,7 @@ public class ProjectDaoTest {
     }
 
     private Project exampleProject() {
-        return null;
+        return new Project();
     }
 
     @Test
