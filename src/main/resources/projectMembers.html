@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Project Manager - Project Members</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>Project view</h1>
+
+<div id="projectMembers"></div>
+
+<div>
+    <ul>
+        <li><a href="newProjectMember.html">Add new project member</a></li>
+    </ul>
+
+</div>
+</body>
+<script>
+    fetch("/api/projectMembers")
+        .then(function(response) {
+            return response.text();
+        }).then(function(text) {
+        document.getElementById("projectMembers").innerHTML = text;
+    });
+</script>
+</html>

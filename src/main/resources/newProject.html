@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Project Manager - new project</title>
+</head>
+<body>
+    <h1>Create a new project</h1>
+
+    <form method="POST" action="/api/newProject">
+        <div><label>Project Name: <input type="text" name="project_name" /></label></div>
+        <div><label>Last name: <input type="text" name="last_name" /></label></div>
+        <div>
+            <select name="status">
+                <option value="planned">Planned</option>
+                <option value="inProgress">In Progress</option>
+                <option value="completed">Completed</option>
+            </select>
+        </div>
+        <div><label>Email address: <input type="email" name="email" /></label></div>
+        <button>Add</button>
+    </form>
+</body>
+</html>
