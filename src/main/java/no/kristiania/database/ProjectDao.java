@@ -40,7 +40,6 @@ public class ProjectDao {
             )) {
                 statement.setString(1, project.getName());
                 statement.executeUpdate();
-
                 try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                     generatedKeys.next();
                     project.setId(generatedKeys.getLong("id"));
