@@ -120,12 +120,12 @@ class HttpServerTest {
     @Test
     void shouldPostNewProject() throws IOException, SQLException {
         HttpServer server = new HttpServer(10010, dataSource);
-        String requestBody = "project_name=ApplePay";
+        String requestBody = "project_name=IT-Prosjekter";
         HttpClient postClient = new HttpClient("localhost", server.getPort(), "/api/newProject", "POST", requestBody);
         assertEquals(200, postClient.getStatusCode());
 
         HttpClient getClient = new HttpClient("localhost", server.getPort(), "/api/projects");
-        assertThat(getClient.getResponseBody()).contains("<option id=' 6'>ApplePay</option>");
+        assertThat(getClient.getResponseBody()).contains("IT-Prosjekter");
     }
 
 }

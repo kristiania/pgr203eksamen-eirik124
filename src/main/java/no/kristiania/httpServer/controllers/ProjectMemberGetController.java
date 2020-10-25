@@ -1,29 +1,28 @@
 package no.kristiania.httpServer.controllers;
 
-import no.kristiania.database.Project;
-import no.kristiania.database.ProjectDao;
+import no.kristiania.database.ProjectMember;
+import no.kristiania.database.ProjectMemberDao;
 import no.kristiania.httpServer.HttpMessage;
-import no.kristiania.httpServer.controllers.ControllerMcControllerface;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.sql.SQLException;
 
-public class ProjectGetController implements ControllerMcControllerface {
-    private ProjectDao projectDao;
+public class ProjectMemberGetController implements ControllerMcControllerface {
+    private ProjectMemberDao projectMemberDao;
 
-    public ProjectGetController(ProjectDao projectDao) {
-        this.projectDao = projectDao;
+    public ProjectMemberGetController(ProjectMemberDao projectMemberDao) {
+        this.projectMemberDao = projectMemberDao;
     }
 
     @Override
     public void handle(HttpMessage request, Socket clientSocket) throws IOException, SQLException {
-        String body = "";
-        for (Project project : projectDao.list()) {
-            body += "<option id='" + project.getId() + "'>" + project.getName() + "</option> ";
+        String body = "<ul>";
+        for (ProjectMember projectMember : projectMemberDao.list()) {
+            body += "<li>" + projectMember.getFirstName() + " " + projectMember.getLastName() +
+                    ", " + projectMember.getEmail() + "</li>";
         }
-
-
+        body += "</ul>";
         String response = "HTTP/1.1 200 OK\r\n" +
                 "Content-Length: " + body.length() + "\r\n" +
                 "Content-Type: text/html; application/x-www-form-urlencoded\r\n" +
