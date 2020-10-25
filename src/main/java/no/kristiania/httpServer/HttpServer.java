@@ -3,6 +3,7 @@ package no.kristiania.httpServer;
 import no.kristiania.database.ProjectDao;
 import no.kristiania.database.ProjectMember;
 import no.kristiania.database.ProjectMemberDao;
+import no.kristiania.database.TaskDao;
 import no.kristiania.httpServer.controllers.*;
 import org.flywaydb.core.Flyway;
 import org.postgresql.ds.PGSimpleDataSource;
@@ -28,6 +29,7 @@ public class HttpServer {
     private static final Logger logger = LoggerFactory.getLogger(HttpServer.class);
     private ProjectMemberDao projectMemberDao;
     private ProjectDao projectDao;
+    private TaskDao taskDao;
 
     private Map<String, ControllerMcControllerface> controllers;
     private final ServerSocket serverSocket;
@@ -35,12 +37,15 @@ public class HttpServer {
     public HttpServer(int port, DataSource dataSource) throws IOException {
         projectMemberDao = new ProjectMemberDao(dataSource);
         projectDao = new ProjectDao(dataSource);
+        taskDao = new TaskDao(dataSource);
 
         controllers = Map.of(
                 "/api/newProject", new ProjectPostController(projectDao),
                 "/api/projects", new ProjectGetController(projectDao),
                 "/api/projectMembers", new ProjectMemberGetController(projectMemberDao),
-                "/api/newProjectMember", new ProjectMemberPostController(projectMemberDao)
+                "/api/newProjectMember", new ProjectMemberPostController(projectMemberDao),
+                "/api/newTask", new TaskPostController(taskDao),
+                "/api/tasks", new TaskGetController(taskDao)
         );
 
         serverSocket = new ServerSocket(port);
@@ -84,6 +89,9 @@ public class HttpServer {
                 ControllerMcControllerface controller = controllers.get(requestPath);
                 controller.handle(request, clientSocket);
             } else if(requestPath.equals("/api/projects")) {
+                ControllerMcControllerface controller = controllers.get(requestPath);
+                controller.handle(request, clientSocket);
+            } else if (requestPath.equals("/api/tasks")) {
                 ControllerMcControllerface controller = controllers.get(requestPath);
                 controller.handle(request, clientSocket);
             } else {
