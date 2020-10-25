@@ -7,7 +7,9 @@
 <body>
 <h1>Here is the project's that have been created</h1>
 
-<div id="projects"></div>
+<div>
+    <select id="projects"></select>
+</div>
 
 <div>
     <ul>
@@ -21,6 +23,7 @@
         .then(function(response) {
             return response.text();
         }).then(function(text) {
+        console.log(text);
         document.getElementById("projects").innerHTML = text;
     });
 </script>

@@ -16,31 +16,6 @@ public class ProjectMemberDao {
         this.dataSource = dataSource;
     }
 
-    public static void main(String[] args) throws SQLException {
-        PGSimpleDataSource dataSource = new PGSimpleDataSource();
-        dataSource.setUrl("jdbc:postgresql://localhost:5432/projectmembers");
-        dataSource.setUser("projectmembers");
-        dataSource.setPassword("3F9YG1oYUo71in*yG");
-
-        ProjectMemberDao projectMemberDao = new ProjectMemberDao(dataSource);
-
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Please enter project member's first name");
-        String projectMemberFirstName = scanner.nextLine();
-        System.out.println("Please enter project member's last name");
-        String projectMemberLastName = scanner.nextLine();
-        System.out.println("Please enter project member's e-mail address");
-        String projectMemberEmail = scanner.nextLine();
-
-        ProjectMember projectMember = new ProjectMember();
-        projectMember.setFirstName(projectMemberFirstName);
-        projectMember.setLastName(projectMemberLastName);
-        projectMember.setEmail(projectMemberEmail);
-
-        projectMemberDao.insert(projectMember);
-        System.out.println(projectMemberDao.list());
-    }
-
     public void insert(ProjectMember projectMember) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement("INSERT INTO projectmembers (first_name, last_name, email) VALUES (?, ?, ?)",

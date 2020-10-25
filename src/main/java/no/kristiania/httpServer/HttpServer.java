@@ -29,13 +29,14 @@ public class HttpServer {
 
     private static final Logger logger = LoggerFactory.getLogger(HttpServer.class);
     private ProjectMemberDao projectMemberDao;
+    private ProjectDao projectDao;
 
     private Map<String, ControllerMcControllerface> controllers;
     private final ServerSocket serverSocket;
 
     public HttpServer(int port, DataSource dataSource) throws IOException {
         projectMemberDao = new ProjectMemberDao(dataSource);
-        ProjectDao projectDao = new ProjectDao(dataSource);
+        projectDao = new ProjectDao(dataSource);
 
         controllers = Map.of(
                 "/api/newProject", new ProjectPostController(projectDao),
@@ -59,6 +60,7 @@ public class HttpServer {
     public int getPort() {
         return serverSocket.getLocalPort();
     }
+
 
     private void handleRequest(Socket clientSocket) throws IOException, SQLException {
         HttpMessage request = new HttpMessage(clientSocket);
@@ -87,6 +89,7 @@ public class HttpServer {
             } else if(requestPath.equals("/api/projects")) {
                 ControllerMcControllerface controller = controllers.get(requestPath);
                 controller.handle(request, clientSocket);
+                System.out.print(projectDao.list());
             } else {
                 ControllerMcControllerface controller = controllers.get(requestPath);
                 if (controller != null) {
@@ -209,6 +212,7 @@ public class HttpServer {
 
         HttpServer server = new HttpServer(8080, dataSource);
         logger.info("Started on http://localhost:{}/index.html", 8080);
+
     }
 
 
