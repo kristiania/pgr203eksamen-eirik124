@@ -8,6 +8,8 @@ import no.kristiania.httpServer.controllers.ControllerMcControllerface;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 
 public class ProjectPostController implements ControllerMcControllerface {
@@ -22,7 +24,7 @@ public class ProjectPostController implements ControllerMcControllerface {
         QueryString requestParameter = new QueryString(request.getBody());
 
         Project project = new Project();
-        project.setName(requestParameter.getParameter("project_name"));
+        project.setName(URLDecoder.decode(requestParameter.getParameter("project_name"), StandardCharsets.UTF_8));
         projectDao.insert(project);
 
         String body = "Okay";

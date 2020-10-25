@@ -120,6 +120,10 @@ public class HttpServer {
             String contentType = "text/plain";
             if (requestPath.endsWith(".html")) {
                 contentType = "text/html";
+            } else if (requestPath.endsWith(".css")) {
+                contentType = "text/css";
+            } else {
+                contentType = "text/plain";
             }
 
             String response = "HTTP/1.1 200 OK\r\n" +
