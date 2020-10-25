@@ -1,7 +1,10 @@
-package no.kristiania.httpServer;
+package no.kristiania.httpServer.controllers;
 
 import no.kristiania.database.Project;
 import no.kristiania.database.ProjectDao;
+import no.kristiania.httpServer.HttpMessage;
+import no.kristiania.httpServer.QueryString;
+import no.kristiania.httpServer.controllers.ControllerMcControllerface;
 
 import java.io.IOException;
 import java.net.Socket;

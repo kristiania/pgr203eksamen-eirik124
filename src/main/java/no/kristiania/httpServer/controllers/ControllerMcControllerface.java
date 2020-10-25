@@ -1,4 +1,6 @@
-package no.kristiania.httpServer;
+package no.kristiania.httpServer.controllers;
+
+import no.kristiania.httpServer.HttpMessage;
 
 import java.io.IOException;
 import java.net.Socket;

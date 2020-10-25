@@ -125,7 +125,7 @@ class HttpServerTest {
         assertEquals(200, postClient.getStatusCode());
 
         HttpClient getClient = new HttpClient("localhost", server.getPort(), "/api/projects");
-        assertThat(getClient.getResponseBody()).contains("<li>ApplePay</li>");
+        assertThat(getClient.getResponseBody()).contains("<option id=' 6'>ApplePay</option>");
     }
 
 }

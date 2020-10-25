@@ -3,6 +3,9 @@ package no.kristiania.httpServer;
 import no.kristiania.database.ProjectDao;
 import no.kristiania.database.ProjectMember;
 import no.kristiania.database.ProjectMemberDao;
+import no.kristiania.httpServer.controllers.ControllerMcControllerface;
+import no.kristiania.httpServer.controllers.ProjectGetController;
+import no.kristiania.httpServer.controllers.ProjectPostController;
 import org.flywaydb.core.Flyway;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.slf4j.Logger;
@@ -80,7 +83,10 @@ public class HttpServer {
             if (requestPath.equals("/echo")) {
                 handleEchoRequest(clientSocket, requestTarget, questionPos);
             } else if (requestPath.equals("/api/projectMembers")) {
-                handleGetProducts(clientSocket);
+                handleGetProjectMember(clientSocket);
+            } else if(requestPath.equals("/api/projects")) {
+                ControllerMcControllerface controller = controllers.get(requestPath);
+                controller.handle(request, clientSocket);
             } else {
                 ControllerMcControllerface controller = controllers.get(requestPath);
                 if (controller != null) {
@@ -149,7 +155,7 @@ public class HttpServer {
         }
     }
 
-    private void handleGetProducts(Socket clientSocket) throws IOException, SQLException {
+    private void handleGetProjectMember(Socket clientSocket) throws IOException, SQLException {
         String body = "<ul>";
         for (ProjectMember projectMember : projectMemberDao.list()) {
             body += "<li>" + projectMember.getFirstName() + " " + projectMember.getLastName() +
@@ -204,6 +210,7 @@ public class HttpServer {
         HttpServer server = new HttpServer(8080, dataSource);
         logger.info("Started on http://localhost:{}/index.html", 8080);
     }
+
 
     public List<ProjectMember> getProjectMembers() throws SQLException {
         return projectMemberDao.list();
