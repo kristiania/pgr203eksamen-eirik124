@@ -47,7 +47,8 @@ public class HttpServer {
                 "/api/projectMemberList", new ProjectMemberListGetController(projectMemberDao),
                 "/api/newTask", new TaskPostController(taskDao),
                 "/api/tasks", new TaskGetController(taskDao),
-                "/api/assignToProject", new AssignToProjectPostController(projectMemberToProjectDao)
+                "/api/assignToProject", new AssignToProjectPostController(projectMemberToProjectDao),
+                "/api/assignedProjects", new AssignedProjectGetController(projectMemberToProjectDao)
         );
 
         serverSocket = new ServerSocket(port);
@@ -94,6 +95,9 @@ public class HttpServer {
                 ControllerMcControllerface controller = controllers.get(requestPath);
                 controller.handle(request, clientSocket);
             } else if (requestPath.equals("/api/tasks")) {
+                ControllerMcControllerface controller = controllers.get(requestPath);
+                controller.handle(request, clientSocket);
+            } else if(requestPath.equals("/api/assignedProjects")) {
                 ControllerMcControllerface controller = controllers.get(requestPath);
                 controller.handle(request, clientSocket);
             } else {

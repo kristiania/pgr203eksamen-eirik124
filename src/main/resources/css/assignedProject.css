@@ -1,0 +1,24 @@
+#projects-container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+}
+
+.project-card {
+    background-color: bisque;
+    margin: 20px;
+    border-radius: 20px;
+    padding: 20px;
+    border-width: 20px;;
+}
+
+.to.do {
+    border: 10px solid red;
+}
+
+.in.progress {
+    border: 10px solid orange;
+}
+
+.done {
+    border: 10px solid green;
+}

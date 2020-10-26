@@ -7,6 +7,7 @@ public class ProjectMemberToProject {
     private String projectName;
     private Long id;
     private String taskName;
+    private String description;
 
     //GETTERS
 
@@ -30,6 +31,9 @@ public class ProjectMemberToProject {
         return id;
     }
 
+    public String getDescription() {
+        return description;
+    }
 
     //SETTERS
 
@@ -52,5 +56,9 @@ public class ProjectMemberToProject {
 
     public void setTaskName(String taskName) {
         this.taskName = taskName;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

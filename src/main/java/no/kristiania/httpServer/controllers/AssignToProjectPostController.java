@@ -29,6 +29,7 @@ public class AssignToProjectPostController implements ControllerMcControllerface
             projectMemberToProject.setProjectMemberName(URLDecoder.decode(requestParameter.getParameter("select_project_member"), StandardCharsets.UTF_8.name()));
             projectMemberToProject.setTaskName(URLDecoder.decode(requestParameter.getParameter("select_task"), StandardCharsets.UTF_8.name()));
             projectMemberToProject.setStatus(URLDecoder.decode(requestParameter.getParameter("select_status"), StandardCharsets.UTF_8.name()));
+            projectMemberToProject.setDescription(URLDecoder.decode(requestParameter.getParameter("description"), StandardCharsets.UTF_8.name()));
             projectMemberToProjectDao.insert(projectMemberToProject);
 
             String body = "Okay";

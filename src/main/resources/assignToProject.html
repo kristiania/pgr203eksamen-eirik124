@@ -8,22 +8,31 @@
 
 <form method="POST" action="/api/assignToProject">
     <div>
+        <p>Select Project</p>
         <select id="projects" name="select_project">
             <option selected="selected">Select Project</option>
         </select>
     </div>
     <div>
-        <select id="projectMemberName" name="select_project_member"></select>
+        <p>Assign Project Member to project</p>
+        <select id="projectMemberName" name="select_project_member" multiple size="5"></select>
     </div>
     <div>
+        <p>Select task</p>
         <select id="tasks" name="select_task"></select>
     </div>
     <div>
+        <p>Select Status</p>
         <select id="status" name="select_status">
             <option value="to do">To do</option>
             <option value="in progress">In progress</option>
             <option value="done">Done</option>
         </select>
+    </div>
+    <div>
+        <textarea name="description" maxlength="500">
+            Enter description here....
+        </textarea>
     </div>
     <div>
     </div>

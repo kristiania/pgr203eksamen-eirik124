@@ -15,13 +15,14 @@ public class ProjectMemberToProjectDao {
 
     public void insert(ProjectMemberToProject projectMemberToProject) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement("INSERT INTO projectmember_to_project (project_name, projectmember_name, task_name, status) VALUES (?, ?, ?, ?)",
+            try (PreparedStatement statement = connection.prepareStatement("INSERT INTO projectmember_to_project (project_name, projectmember_name, task_name, status, description) VALUES (?, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS
             )) {
                 statement.setString(1, projectMemberToProject.getProjectName());
                 statement.setString(2, projectMemberToProject.getProjectMemberName());
                 statement.setString(3, projectMemberToProject.getTaskName());
                 statement.setString(4, projectMemberToProject.getStatus());
+                statement.setString(5, projectMemberToProject.getDescription());
                 statement.executeUpdate();
 
                 try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
@@ -50,10 +51,11 @@ public class ProjectMemberToProjectDao {
     private ProjectMemberToProject mapRowToProjectMemberToProject(ResultSet rs) throws SQLException {
         ProjectMemberToProject projectMemberToProject = new ProjectMemberToProject();
         projectMemberToProject.setId(rs.getLong("id"));
-        projectMemberToProject.setProjectName(rs.getString("select_project"));
-        projectMemberToProject.setProjectMemberName(rs.getString("select_project_member"));
-        projectMemberToProject.setTaskName(rs.getString("select_task"));
-        projectMemberToProject.setStatus(rs.getString("select_status"));
+        projectMemberToProject.setProjectName(rs.getString("project_name"));
+        projectMemberToProject.setProjectMemberName(rs.getString("projectmember_name"));
+        projectMemberToProject.setTaskName(rs.getString("task_name"));
+        projectMemberToProject.setStatus(rs.getString("status"));
+        projectMemberToProject.setDescription(rs.getString("description"));
         return projectMemberToProject;
     }
 
