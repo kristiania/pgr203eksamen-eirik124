@@ -1,9 +1,6 @@
 package no.kristiania.httpServer;
 
-import no.kristiania.database.ProjectDao;
-import no.kristiania.database.ProjectMember;
-import no.kristiania.database.ProjectMemberDao;
-import no.kristiania.database.TaskDao;
+import no.kristiania.database.*;
 import no.kristiania.httpServer.controllers.*;
 import org.flywaydb.core.Flyway;
 import org.postgresql.ds.PGSimpleDataSource;
@@ -30,6 +27,7 @@ public class HttpServer {
     private ProjectMemberDao projectMemberDao;
     private ProjectDao projectDao;
     private TaskDao taskDao;
+    private ProjectMemberToProjectDao projectMemberToProjectDao;
 
     private Map<String, ControllerMcControllerface> controllers;
     private final ServerSocket serverSocket;
@@ -38,14 +36,18 @@ public class HttpServer {
         projectMemberDao = new ProjectMemberDao(dataSource);
         projectDao = new ProjectDao(dataSource);
         taskDao = new TaskDao(dataSource);
+        projectMemberToProjectDao = new ProjectMemberToProjectDao(dataSource);
+
 
         controllers = Map.of(
                 "/api/newProject", new ProjectPostController(projectDao),
                 "/api/projects", new ProjectGetController(projectDao),
                 "/api/projectMembers", new ProjectMemberGetController(projectMemberDao),
                 "/api/newProjectMember", new ProjectMemberPostController(projectMemberDao),
+                "/api/projectMemberList", new ProjectMemberListGetController(projectMemberDao),
                 "/api/newTask", new TaskPostController(taskDao),
-                "/api/tasks", new TaskGetController(taskDao)
+                "/api/tasks", new TaskGetController(taskDao),
+                "/api/assignToProject", new AssignToProjectPostController(projectMemberToProjectDao)
         );
 
         serverSocket = new ServerSocket(port);
