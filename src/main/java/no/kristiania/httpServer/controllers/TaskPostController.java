@@ -6,6 +6,7 @@ import no.kristiania.httpServer.HttpMessage;
 import no.kristiania.httpServer.QueryString;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.Socket;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -18,7 +19,7 @@ public class TaskPostController implements HttpController {
         this.taskDao = taskDao;
     }
 
-    @Override
+    /*@Override
     public void handle(HttpMessage request, Socket clientSocket) throws IOException, SQLException {
         QueryString requestParameter = new QueryString(request.getBody());
 
@@ -34,5 +35,10 @@ public class TaskPostController implements HttpController {
                 body;
 
         clientSocket.getOutputStream().write(response.getBytes("UTF-8"));
+    } */
+
+    @Override
+    public void handle(String requestMethod, HttpMessage request, Socket clientSocket, OutputStream outputStream) throws IOException, SQLException {
+
     }
 }

@@ -5,6 +5,7 @@ import no.kristiania.database.TaskDao;
 import no.kristiania.httpServer.HttpMessage;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.Socket;
 import java.sql.SQLException;
 
@@ -15,7 +16,7 @@ public class TaskGetController implements HttpController {
         this.taskDao = taskDao;
     }
 
-    @Override
+   /* @Override
     public void handle(HttpMessage request, Socket clientSocket) throws IOException, SQLException {
         String body = "";
         for (Task task : taskDao.list()) {
@@ -30,5 +31,10 @@ public class TaskGetController implements HttpController {
                 body;
 
         clientSocket.getOutputStream().write(response.getBytes("UTF-8"));
+    } */
+
+    @Override
+    public void handle(String requestMethod, HttpMessage request, Socket clientSocket, OutputStream outputStream) throws IOException, SQLException {
+
     }
 }

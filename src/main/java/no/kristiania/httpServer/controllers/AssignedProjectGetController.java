@@ -5,6 +5,7 @@ import no.kristiania.database.MemberToProjectDao;
 import no.kristiania.httpServer.HttpMessage;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.Socket;
 import java.sql.SQLException;
 
@@ -15,7 +16,7 @@ public class AssignedProjectGetController implements HttpController {
         this.memberToProjectDao = memberToProjectDao;
     }
 
-    @Override
+   /* @Override
     public void handle(HttpMessage request, Socket clientSocket) throws IOException, SQLException {
         String body = "";
         for (MemberToProject memberToProject : memberToProjectDao.list()) {
@@ -43,5 +44,10 @@ public class AssignedProjectGetController implements HttpController {
                 body;
 
         clientSocket.getOutputStream().write(response.getBytes("UTF-8"));
+    }*/
+
+    @Override
+    public void handle(String requestMethod, HttpMessage request, Socket clientSocket, OutputStream outputStream) throws IOException, SQLException {
+
     }
 }

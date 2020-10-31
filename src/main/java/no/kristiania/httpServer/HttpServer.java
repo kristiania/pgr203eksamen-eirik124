@@ -37,7 +37,7 @@ public class HttpServer {
         memberToProjectDao = new MemberToProjectDao(dataSource);
 
 
-        controllers = Map.of(
+       /* controllers = Map.of(
                 "/api/newProject", new ProjectPostController(projectDao),
                 "/api/projects", new ProjectGetController(projectDao),
                 "/api/projectMembers", new ProjectMemberGetController(memberDao),
@@ -47,6 +47,16 @@ public class HttpServer {
                 "/api/tasks", new TaskGetController(taskDao),
                 "/api/assignToProject", new AssignToProjectPostController(memberToProjectDao),
                 "/api/assignedProjects", new AssignedProjectGetController(memberToProjectDao)
+        );*/
+
+        controllers = Map.of(
+                "/api/newProject", new ProjectController(projectDao),
+                "/api/projects", new ProjectController(projectDao),
+                "/api/assignToProject", new AssignToProjectController(memberToProjectDao),
+                "/api/assignedProjects", new AssignToProjectController(memberToProjectDao)
+
+
+
         );
 
         serverSocket = new ServerSocket(port);
@@ -80,8 +90,24 @@ public class HttpServer {
 
         String requestPath = questionPos != -1 ? requestTarget.substring(0, questionPos) : requestTarget;
 
-        if (requestMethod.equals("POST")) {
-            getController(requestPath).handle(request, clientSocket);
+
+
+        HttpController controller = controllers.get(requestPath);
+        if (requestPath.equals("/api/projects")) {
+            controller.handle(requestMethod, request, clientSocket, clientSocket.getOutputStream());
+        } else if (requestPath.equals("/api/assignedProjects")) {
+            controller.handle(requestMethod, request, clientSocket, clientSocket.getOutputStream());
+        } else {
+            if (controller != null) {
+                controller.handle(requestMethod, request, clientSocket, clientSocket.getOutputStream());
+            } else {
+                handleFileRequest(clientSocket, requestPath);
+            }
+        }
+
+
+     /*   if (requestMethod.equals("POST")) {
+            getController(requestPath).handle("POST", request, clientSocket);
 
         } else {
             if (requestPath.equals("/echo")) {
@@ -106,7 +132,9 @@ public class HttpServer {
                     handleFileRequest(clientSocket, requestPath);
                 }
             }
-        }
+        }*/
+
+
     }
 
     private HttpController getController(String requestPath) {
