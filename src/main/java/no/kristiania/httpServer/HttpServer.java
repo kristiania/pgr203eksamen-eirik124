@@ -37,26 +37,16 @@ public class HttpServer {
         memberToProjectDao = new MemberToProjectDao(dataSource);
 
 
-       /* controllers = Map.of(
-                "/api/newProject", new ProjectPostController(projectDao),
-                "/api/projects", new ProjectGetController(projectDao),
-                "/api/projectMembers", new ProjectMemberGetController(memberDao),
-                "/api/newProjectMember", new ProjectMemberPostController(memberDao),
-                "/api/projectMemberList", new ProjectMemberListGetController(memberDao),
-                "/api/newTask", new TaskPostController(taskDao),
-                "/api/tasks", new TaskGetController(taskDao),
-                "/api/assignToProject", new AssignToProjectPostController(memberToProjectDao),
-                "/api/assignedProjects", new AssignedProjectGetController(memberToProjectDao)
-        );*/
-
         controllers = Map.of(
                 "/api/newProject", new ProjectController(projectDao),
                 "/api/projects", new ProjectController(projectDao),
                 "/api/assignToProject", new AssignToProjectController(memberToProjectDao),
-                "/api/assignedProjects", new AssignToProjectController(memberToProjectDao)
-
-
-
+                "/api/assignedProjects", new AssignToProjectController(memberToProjectDao),
+                "/api/members", new MemberController(memberDao),
+                "/api/newProjectMember", new MemberController(memberDao),
+                "/api/projectMemberList", new MemberController(memberDao),
+                "/api/newTask", new TaskController(taskDao),
+                "/api/tasks", new TaskController(taskDao)
         );
 
         serverSocket = new ServerSocket(port);
@@ -93,17 +83,12 @@ public class HttpServer {
 
 
         HttpController controller = controllers.get(requestPath);
-        if (requestPath.equals("/api/projects")) {
-            controller.handle(requestMethod, request, clientSocket, clientSocket.getOutputStream());
-        } else if (requestPath.equals("/api/assignedProjects")) {
-            controller.handle(requestMethod, request, clientSocket, clientSocket.getOutputStream());
-        } else {
             if (controller != null) {
                 controller.handle(requestMethod, request, clientSocket, clientSocket.getOutputStream());
             } else {
                 handleFileRequest(clientSocket, requestPath);
             }
-        }
+
 
 
      /*   if (requestMethod.equals("POST")) {

@@ -14,7 +14,7 @@ public class TaskDao {
 
     public List<Task> list() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement("select * from tasks")) {
+            try (PreparedStatement statement = connection.prepareStatement("select * from task")) {
                 try (ResultSet rs = statement.executeQuery()) {
                     List<Task> tasks = new ArrayList<>();
                     while (rs.next()) {
@@ -35,7 +35,7 @@ public class TaskDao {
 
     public void insert(Task task) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement("INSERT INTO tasks (name) VALUES (?)",
+            try (PreparedStatement statement = connection.prepareStatement("INSERT INTO task (name) VALUES (?)",
                     Statement.RETURN_GENERATED_KEYS
             )) {
                 statement.setString(1, task.getName());
@@ -50,7 +50,7 @@ public class TaskDao {
 
     public Task retrieve(long id) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM tasks WHERE id = ?")) {
+            try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM task WHERE id = ?")) {
                 statement.setLong(1, id);
                 try (ResultSet rs = statement.executeQuery()) {
                     if (rs.next()) {
