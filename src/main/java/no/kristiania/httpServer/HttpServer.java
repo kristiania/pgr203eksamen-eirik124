@@ -85,6 +85,8 @@ public class HttpServer {
         HttpController controller = controllers.get(requestPath);
             if (controller != null) {
                 controller.handle(requestMethod, request, clientSocket, clientSocket.getOutputStream());
+            } else if (requestPath.equals("/echo")) {
+            handleEchoRequest(clientSocket, requestTarget, questionPos);
             } else {
                 handleFileRequest(clientSocket, requestPath);
             }
@@ -95,9 +97,7 @@ public class HttpServer {
             getController(requestPath).handle("POST", request, clientSocket);
 
         } else {
-            if (requestPath.equals("/echo")) {
-                handleEchoRequest(clientSocket, requestTarget, questionPos);
-            } else if (requestPath.equals("/api/projectMembers")) {
+             else if (requestPath.equals("/api/projectMembers")) {
                 HttpController controller = controllers.get(requestPath);
                 controller.handle(request, clientSocket);
             } else if(requestPath.equals("/api/projects")) {
