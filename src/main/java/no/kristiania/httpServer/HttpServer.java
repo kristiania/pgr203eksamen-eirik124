@@ -8,10 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
-import java.io.ByteArrayOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
@@ -87,11 +84,11 @@ public class HttpServer {
             if (controller != null) {
                 controller.handle(requestMethod, request, clientSocket, clientSocket.getOutputStream());
             }  else {
-                handleFileRequest(clientSocket, requestPath);
+                handleFileRequest(clientSocket, requestPath, clientSocket.getOutputStream());
             }
     }
 
-    private void handleFileRequest(Socket clientSocket, String requestPath) throws IOException {
+    private void handleFileRequest(Socket clientSocket, String requestPath, OutputStream outputStream) throws IOException {
         try (InputStream inputStream = getClass().getResourceAsStream(requestPath)) {
             if (inputStream == null) {
                 String body = requestPath + " does not exist";
@@ -104,6 +101,13 @@ public class HttpServer {
                 clientSocket.getOutputStream().write(response.getBytes("UTF-8"));
                 return;
             }
+            if (requestPath.equals("/")) {
+                outputStream.write(("HTTP/1.1 302 Redirect\r\n" +
+                        "Location: /index.html\r\n" +
+                        "Connection: close\r\n" +
+                        "\r\n").getBytes("UTF-8"));
+            }
+
             ByteArrayOutputStream buffer = new ByteArrayOutputStream();
             inputStream.transferTo(buffer);
 
