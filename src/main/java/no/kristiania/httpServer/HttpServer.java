@@ -79,7 +79,6 @@ public class HttpServer {
         String requestPath = questionPos != -1 ? requestTarget.substring(0, questionPos) : requestTarget;
 
 
-
         HttpController controller = controllers.get(requestPath);
             if (controller != null) {
                 controller.handle(requestMethod, request, clientSocket, clientSocket.getOutputStream());

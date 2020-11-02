@@ -8,7 +8,10 @@ Pål Anders Byenstuen, Eirik Lundanes og Vibeke Opgård.
 
 ## Beskrivelse av prosjekt
 
-Oppgaven er utviklet med test-drevet parprogrammering. Vi har laget en webapplikasjon som kan lagre og liste ut prosjektmedlemmer fra databasen. Det er mulig å legge til et "project member" med fornavn, etternavn og e-postadresse og se den på websiden.
+Til eksamen i PGR203 Avansert Java har vi laget en webapplikasjon som kan lagre og liste ut prosjektmedlemmer, og opprette prosjekter og prosjektdeltakere fra databasen. Det er mulig å legge til et "member" med fornavn, etternavn og e-postadresse og se den på websiden. Oppgaven er utviklet med test-drevet parprogrammering.
+
+Programmet kan brukes ved å besøke localhost:8080 i nettleseren. Her kan du velge member, project, task, og endre status på oppgaver.
+
 
 ### Github Actions
 Link til github actions
