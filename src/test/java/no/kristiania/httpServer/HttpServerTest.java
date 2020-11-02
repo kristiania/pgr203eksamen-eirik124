@@ -93,7 +93,7 @@ class HttpServerTest {
         HttpServer server = new HttpServer(10008, dataSource);
         HttpClient client = new HttpClient("localhost", server.getPort(), "/api/newProjectMember", "POST", "first_name=Eirik&last_name=Test&email=test@email.com");
 
-        assertEquals(200, client.getStatusCode());
+        assertEquals(302, client.getStatusCode());
         assertThat(server.getProjectMembers())
                 .extracting(Member::getFirstName)
                 .contains("Eirik");
@@ -118,7 +118,7 @@ class HttpServerTest {
         HttpServer server = new HttpServer(10010, dataSource);
         String requestBody = "project_name=IT-Prosjekter";
         HttpClient postClient = new HttpClient("localhost", server.getPort(), "/api/newProject", "POST", requestBody);
-        assertEquals(200, postClient.getStatusCode());
+        assertEquals(302, postClient.getStatusCode());
 
         HttpClient getClient = new HttpClient("localhost", server.getPort(), "/api/projects");
         assertThat(getClient.getResponseBody()).contains("IT-Prosjekter");

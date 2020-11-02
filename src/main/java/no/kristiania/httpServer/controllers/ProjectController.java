@@ -38,9 +38,6 @@ public class ProjectController implements HttpController {
                         "\r\n").getBytes("UTF-8"));
 
             } else {
-               /* for (Project project : dao.list()) {
-                    body += "<option id='" + project.getId() + "'>" + project.getName() + "</option> ";
-                }*/
 
                 body = getBody();
                 String status = "200";
