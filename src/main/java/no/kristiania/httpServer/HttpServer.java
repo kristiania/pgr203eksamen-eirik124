@@ -12,6 +12,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -23,31 +24,21 @@ public class HttpServer {
     private ProjectDao projectDao;
     private TaskDao taskDao;
     private MemberToProjectDao memberToProjectDao;
+    private FileController fileLocation;
 
-    private Map<String, HttpController> controllers;
+    private Map<String, HttpController> controllers = new HashMap<>();
     private final ServerSocket serverSocket;
 
-    public HttpServer(int port, DataSource dataSource) throws IOException {
-        memberDao = new MemberDao(dataSource);
-        projectDao = new ProjectDao(dataSource);
-        taskDao = new TaskDao(dataSource);
-        memberToProjectDao = new MemberToProjectDao(dataSource);
-
-
-        controllers = Map.of(
-                "/api/newProject", new ProjectController(projectDao),
-                "/api/projects", new ProjectController(projectDao),
-                "/api/assignToProject", new AssignToProjectController(memberToProjectDao),
-                "/api/assignedProjects", new AssignToProjectController(memberToProjectDao),
-                "/api/members", new MemberController(memberDao),
-                "/api/newProjectMember", new MemberController(memberDao),
-                "/api/projectMemberList", new MemberController(memberDao),
-                "/api/newTask", new TaskController(taskDao),
-                "/api/tasks", new TaskController(taskDao),
-                "/echo", new EchoController()
-        );
-
+    public HttpServer(int port) throws IOException {
         serverSocket = new ServerSocket(port);
+        controllers.put("/echo", new EchoController());
+    }
+
+
+
+
+    public void start() {
+        logger.info("Started on http://localhost:{}/", 8080);
 
         new Thread(() -> {
             while (true) {
@@ -78,31 +69,29 @@ public class HttpServer {
 
         String requestPath = questionPos != -1 ? requestTarget.substring(0, questionPos) : requestTarget;
 
-
         HttpController controller = controllers.get(requestPath);
-            if (controller != null) {
-                controller.handle(requestMethod, request, clientSocket, clientSocket.getOutputStream());
-            }  else {
-                handleFileRequest(clientSocket, requestPath, clientSocket.getOutputStream());
-            }
+        if ( controller != null) {
+            controller.handle(requestMethod, request, clientSocket, clientSocket.getOutputStream());
+        } else {
+            handleFileRequest(clientSocket, requestPath, clientSocket.getOutputStream());
+        }
+
     }
 
-    private void handleFileRequest(Socket clientSocket, String requestPath, OutputStream outputStream) throws IOException {
+
+    public void handleFileRequest(Socket clientSocket, String requestPath, OutputStream outputStream) throws IOException {
         try (InputStream inputStream = getClass().getResourceAsStream(requestPath)) {
             if (inputStream == null) {
-                String body = requestPath + " does not exist";
-                String response = "HTTP/1.1 404 Not Found\r\n" +
-                        "Content-Length: " + body.length() + "\r\n" +
-                        "Connection: close\r\n" +
+                outputStream.write(("HTTP/1.1 404 Not found\r\n" +
+                        "Content-Length: 9\r\n" +
+                        "Connenction: close\r\n" +
                         "\r\n" +
-                        body;
-                // Write the response back to the client
-                clientSocket.getOutputStream().write(response.getBytes("UTF-8"));
+                        "Not found").getBytes("UTF-8"));
                 return;
             }
             if (requestPath.equals("/")) {
                 outputStream.write(("HTTP/1.1 302 Redirect\r\n" +
-                        "Location: /index.html\r\n" +
+                        "Location: http://localhost:8080/index.html\r\n" +
                         "Connection: close\r\n" +
                         "\r\n").getBytes("UTF-8"));
             }
@@ -130,31 +119,18 @@ public class HttpServer {
         }
     }
 
-
-
-
-
     public static void main(String[] args) throws IOException {
-        Properties properties = new Properties();
-        try (FileReader fileReader = new FileReader("pgr203.properties")) {
-            properties.load(fileReader);
-        }
-
-        PGSimpleDataSource dataSource = new PGSimpleDataSource();
-        dataSource.setUrl(properties.getProperty("dataSource.url"));
-        dataSource.setUser(properties.getProperty("dataSource.username"));
-        dataSource.setPassword(properties.getProperty("dataSource.password"));
-
-        logger.info("Using database {}", dataSource.getUrl());
-        Flyway.configure().dataSource(dataSource).load().migrate();
-
-        HttpServer server = new HttpServer(8080, dataSource);
-        logger.info("Started on http://localhost:{}/index.html", 8080);
-
+        HttpServer server = new HttpServer(8080);
+        server.start();
     }
 
 
     public List<Member> getProjectMembers() throws SQLException {
         return memberDao.list();
     }
+
+    public void addController(String path, HttpController controller) {
+        controllers.put(path, controller);
+    }
+
 }
