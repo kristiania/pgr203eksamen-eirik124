@@ -11,14 +11,52 @@
     border-width: 20px;;
 }
 
-.to.do {
+.to-do {
     border: 10px solid red;
 }
 
-.in.progress {
+.in-progress {
     border: 10px solid orange;
 }
 
 .done {
     border: 10px solid green;
+}
+
+.null {
+    border: 10px solid grey;
+}
+
+.color-code {
+    width: 30px;
+    height: 30px;
+}
+
+#null {
+    background-color: grey;
+}
+
+#to-do {
+    background-color: red;
+}
+
+#in-progress {
+    background-color: orange;
+}
+
+#done {
+    background-color: green;
+}
+
+.info-box {
+    border: 5px solid black;
+    margin: 10px;
+    border-radius: 10px;
+    min-width: 100px;
+    display: inline-block;
+}
+
+.info-content {
+    padding: 5px;
+    text-align: center;
 }

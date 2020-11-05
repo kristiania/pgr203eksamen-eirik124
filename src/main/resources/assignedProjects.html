@@ -12,6 +12,33 @@
         <li><a href="index.html">Return to home page</a></li>
     </ul>
 </div>
+<div class="info">
+    <h3>Color code info</h3>
+    <div class="info-box">
+        <div class="info-content">
+            <p>Unknown status</p>
+            <div class="color-code" id="null"></div>
+        </div>
+    </div>
+    <div class="info-box">
+        <div class="info-content">
+            <p>To do</p>
+            <div class="color-code" id="to-do"></div>
+        </div>
+    </div>
+    <div class="info-box">
+        <div class="info-content">
+            <p>In progress</p>
+            <div class="color-code" id="in-progress"></div>
+        </div>
+    </div>
+    <div class="info-box">
+        <div class="info-content">
+            <p>Done</p>
+            <div class="color-code" id="done"></div>
+        </div>
+    </div>
+</div>
 </body>
 <script>
     fetch("/api/assignedProjects")

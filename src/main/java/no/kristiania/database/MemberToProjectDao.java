@@ -48,6 +48,16 @@ public class MemberToProjectDao {
         }
     }
 
+    public void updateStatus(String status, long id) throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement("UPDATE projectmember_to_project SET status = ? WHERE id=?")) {
+                statement.setString(1,status);
+                statement.setLong(2,id);
+                statement.executeUpdate();
+            }
+        }
+    }
+
     private MemberToProject mapRowToProjectMemberToProject(ResultSet rs) throws SQLException {
         MemberToProject memberToProject = new MemberToProject();
         memberToProject.setId(rs.getLong("id"));
