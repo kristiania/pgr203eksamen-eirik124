@@ -94,7 +94,7 @@
                         <configuration>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>no.kristiania.httpServer.HttpServer</mainClass>
+                                    <mainClass>no.kristiania.httpServer.ProjectManagerServer</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
