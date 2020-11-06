@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Project</title>
+</head>
+<body>
+    <h1>Update Project Name</h1>
+    <form method="post" action="/api/updateProject">
+        <select name="project-name" id="project-name"></select><br>
+        <input type="text" name="update-project-name" placeholder="New project name"><br>
+        <button>Update</button>
+    </form>
+</body>
+<script>
+    fetch("/api/projects")
+        .then(function(response) {
+            return response.text();
+        }).then(function(text) {
+        document.getElementById("project-name").innerHTML = text;
+    });
+</script>
+</html>

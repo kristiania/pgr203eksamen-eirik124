@@ -48,6 +48,16 @@ public class ProjectDao {
         }
     }
 
+    public void updateName(String name, long id) throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement("UPDATE project SET name = ? WHERE id=?")) {
+                statement.setString(1,name);
+                statement.setLong(2,id);
+                statement.executeUpdate();
+            }
+        }
+    }
+
     public Project retrieve(long id) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM project WHERE id = ?")) {
