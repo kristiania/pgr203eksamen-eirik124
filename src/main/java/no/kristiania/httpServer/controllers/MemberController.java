@@ -41,6 +41,7 @@ public class MemberController implements HttpController {
 
                 outputStream.write(("HTTP/1.1 302 Redirect\r\n" +
                         "Location: /newProjectMember.html\r\n" +
+                        "Transfer-Encoding: chunked" +
                         "Connection: close\r\n" +
                         "\r\n").getBytes("UTF-8"));
             } else {

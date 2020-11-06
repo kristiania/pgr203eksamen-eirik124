@@ -33,6 +33,7 @@ public class TaskController implements HttpController {
 
                 outputStream.write(("HTTP/1.1 302 Redirect\r\n" +
                         "Location: /newTask.html\r\n" +
+                        "Transfer-Encoding: chunked" +
                         "Connection: close\r\n" +
                         "\r\n").getBytes("UTF-8"));
             } else {

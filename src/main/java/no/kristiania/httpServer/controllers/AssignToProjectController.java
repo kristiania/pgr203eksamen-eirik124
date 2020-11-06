@@ -43,6 +43,7 @@ public class AssignToProjectController implements HttpController {
 
                 outputStream.write(("HTTP/1.1 302 Redirect\r\n" +
                         "Location: " + redirect +"\r\n" +
+                        "Transfer-Encoding: chunked" +
                         "Connection: close\r\n" +
                         "\r\n").getBytes("UTF-8"));
 

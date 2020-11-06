@@ -44,7 +44,7 @@ public class ProjectManagerServer {
         logger.info("Using database {}", dataSource.getUrl());
         server.addController("/api/newProject", new ProjectController(projectDao));
         server.addController("/api/projects", new ProjectController(projectDao));
-        server.addController("/api/projectMembers", new MemberController(memberDao));
+        server.addController("/api/members", new MemberController(memberDao));
         server.addController("/api/newProjectMember", new MemberController(memberDao));
         server.addController("/api/projectMemberList", new MemberController(memberDao));
         server.addController("/api/newTask", new TaskController(taskDao));

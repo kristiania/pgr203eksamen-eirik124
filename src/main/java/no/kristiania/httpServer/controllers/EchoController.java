@@ -32,6 +32,7 @@ public class EchoController implements HttpController {
         }
         outputStream.write(("HTTP/1.1 " + statusCode + " OK\r\n" +
                 "Content-Type: text/html\r\n" +
+                "Transfer-Encoding: chunked" +
                 "Content-Length: " + body.length() + "\r\n" +
                 "Connection: close\r\n" +
                 "\r\n" +
