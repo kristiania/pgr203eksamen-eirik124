@@ -1,6 +1,5 @@
 package no.kristiania.httpServer;
 
-import no.kristiania.database.Member;
 import no.kristiania.database.MemberDao;
 import no.kristiania.httpServer.controllers.EchoController;
 import no.kristiania.httpServer.controllers.HttpController;
@@ -16,7 +15,6 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class HttpServer {
@@ -115,9 +113,9 @@ public class HttpServer {
         server.start();
     }
 
-    public List<Member> getProjectMembers() throws SQLException {
+/*    public List<Member> getProjectMembers() throws SQLException {
         return memberDao.list();
-    }
+    }*/
 
     public void addController(String path, HttpController controller) {
         controllers.put(path, controller);

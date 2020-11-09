@@ -1,6 +1,6 @@
 package no.kristiania.httpServer.controllers;
 
-import no.kristiania.database.MemberToProject;
+import no.kristiania.database.objects.MemberToProject;
 import no.kristiania.database.MemberToProjectDao;
 import no.kristiania.httpServer.HttpMessage;
 import no.kristiania.httpServer.QueryString;
@@ -94,7 +94,7 @@ public class AssignToProjectController implements HttpController {
     }
 
     public String getBody() throws SQLException {
-        return dao.list().stream()
+        return dao.listAllElements().stream()
                 .map(dao -> "<div class='project-card " + dao.getStatus() + "' id='" + dao.getId() + "'>" +
                         "<h3>" + dao.getProjectName() + "</h3>" +
                         "<h5>Task: " + dao.getTaskName() + "</h5>" +

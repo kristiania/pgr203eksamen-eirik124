@@ -1,68 +1,39 @@
 package no.kristiania.database;
 
+import no.kristiania.database.objects.Status;
+
 import javax.sql.DataSource;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
-public class StatusDao {
-
-    private final DataSource dataSource;
+public class StatusDao extends AbstractDao<Status> {
 
     public StatusDao(DataSource dataSource) {
-        this.dataSource = dataSource;
+        super(dataSource);
     }
 
-    public void insert(Status status) throws SQLException {
-        try (Connection connection = dataSource.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement("INSERT INTO status (status) VALUES (?)",
-                    Statement.RETURN_GENERATED_KEYS
-            )) {
-                statement.setString(1, status.getStatus());
-
-                statement.executeUpdate();
-
-                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-                    generatedKeys.next();
-                    status.setId(generatedKeys.getLong("id"));
-                }
-            }
-        }
+    @Override
+    public void insertData(Status status, PreparedStatement sqlStatement) throws SQLException {
+        sqlStatement.setString(1, status.getStatus());
     }
 
-    public Status retrieve(Long id) throws SQLException {
-        try (Connection connection = dataSource.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM status WHERE id = ?")) {
-                statement.setLong(1, id);
-                try (ResultSet rs = statement.executeQuery()) {
-                    if (rs.next()) {
-                        return mapRowToStatus(rs);
-                    } else {
-                        return null;
-                    }
-                }
-            }
-        }
-    }
-
-    public List<Status> list() throws SQLException {
-        try (Connection connection = dataSource.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement("select * from status")) {
-                try (ResultSet rs = statement.executeQuery()) {
-                    List<Status> status = new ArrayList<>();
-                    while (rs.next()) {
-                        status.add(mapRowToStatus(rs));
-                    }
-                    return status;
-                }
-            }
-        }
-    }
-
-    private Status mapRowToStatus(ResultSet rs) throws SQLException {
+    @Override
+    protected Status readObject(ResultSet rs) throws SQLException {
         Status status = new Status();
         status.setId(rs.getLong("id"));
         status.setName(rs.getString("status"));
         return status;
     }
+
+    public long insert(Status status) throws SQLException {
+        return insert(status, "INSERT INTO status (status) VALUES (?)");
+    }
+
+
+    public List<Status> listAllElements() throws SQLException {
+        return listAllElements(
+                "select * from status"
+        );
+    }
+
 }

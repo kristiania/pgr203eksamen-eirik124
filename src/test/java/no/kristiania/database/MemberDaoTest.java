@@ -1,5 +1,6 @@
 package no.kristiania.database;
 
+import no.kristiania.database.objects.Member;
 import org.flywaydb.core.Flyway;
 import org.h2.jdbcx.JdbcDataSource;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,7 +31,7 @@ class MemberDaoTest {
         Member member2 = exampleProjectMember();
         memberDao.insert(member1);
         memberDao.insert(member2);
-        assertThat(memberDao.list())
+        assertThat(memberDao.listAllElements())
                 .extracting(Member::getFirstName)
                 .contains(member1.getFirstName(), member2.getFirstName());
     }

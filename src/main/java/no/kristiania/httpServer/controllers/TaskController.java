@@ -1,6 +1,6 @@
 package no.kristiania.httpServer.controllers;
 
-import no.kristiania.database.Task;
+import no.kristiania.database.objects.Task;
 import no.kristiania.database.TaskDao;
 import no.kristiania.httpServer.HttpMessage;
 import no.kristiania.httpServer.QueryString;
@@ -80,7 +80,7 @@ public class TaskController implements HttpController {
     }
 
     public String getBody() throws SQLException {
-        return dao.list().stream()
+        return dao.listAllElements().stream()
                 .map(dao -> "<option name='" + dao.getId() + "' value='" + dao.getId() + "' id='" + dao.getId() + "'>" + dao.getName() + "</option> ")
                 .collect(Collectors.joining(""));
     }

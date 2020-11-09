@@ -1,6 +1,6 @@
 package no.kristiania.httpServer.controllers;
 
-import no.kristiania.database.Project;
+import no.kristiania.database.objects.Project;
 import no.kristiania.database.ProjectDao;
 import no.kristiania.httpServer.HttpMessage;
 import no.kristiania.httpServer.QueryString;
@@ -79,7 +79,7 @@ public class ProjectController implements HttpController {
     }
 
     public String getBody() throws SQLException {
-        return dao.list().stream()
+        return dao.listAllElements().stream()
                 .map(dao -> "<option name='" + dao.getId() + "' value='" + dao.getId() + "' id='" + dao.getId() + "'>" + dao.getName() + "</option>")
                 .collect(Collectors.joining(""));
     }

@@ -1,35 +1,47 @@
 package no.kristiania.database;
 
+import no.kristiania.database.objects.Member;
+
 import javax.sql.DataSource;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
-public class MemberDao {
+public class MemberDao extends AbstractDao<Member> {
 
-    private final DataSource dataSource;
+
 
     public MemberDao(DataSource dataSource) {
-        this.dataSource = dataSource;
+        super(dataSource);
     }
 
-    public void insert(Member member) throws SQLException {
-        try (Connection connection = dataSource.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement("INSERT INTO projectmembers (first_name, last_name, email) VALUES (?, ?, ?)",
-                    Statement.RETURN_GENERATED_KEYS
-            )) {
-                statement.setString(1, member.getFirstName());
-                statement.setString(2, member.getLastName());
-                statement.setString(3, member.getEmail());
-                statement.executeUpdate();
-
-                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-                    generatedKeys.next();
-                    member.setId(generatedKeys.getLong("id"));
-                }
-            }
-        }
+    @Override
+    public void insertData(Member member, PreparedStatement sqlStatement) throws SQLException {
+        sqlStatement.setString(1, member.getFirstName());
+        sqlStatement.setString(2, member.getLastName());
+        sqlStatement.setString(3, member.getEmail());
     }
+
+    @Override
+    protected Member readObject(ResultSet rs) throws SQLException {
+        Member member = new Member();
+        member.setId(rs.getLong("id"));
+        member.setFirstName(rs.getString("first_name"));
+        member.setLastName(rs.getString("last_name"));
+        member.setEmail(rs.getString("email"));
+        return member;
+    }
+
+    public long insert(Member member) throws SQLException {
+        return insert(member, "INSERT INTO projectmembers (first_name, last_name, email) VALUES (?, ?, ?)");
+    }
+
+    public List<Member> listAllElements() throws SQLException {
+        return listAllElements(
+                "select * from projectmembers"
+        );
+    }
+
+
     public void updateMember(String firstName, String lastName, String email, long id) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement("UPDATE projectmembers SET first_name = ?, last_name = ?, email = ? WHERE id=?")) {
@@ -42,41 +54,4 @@ public class MemberDao {
         }
     }
 
-    public Member retrieve(Long id) throws SQLException {
-        try (Connection connection = dataSource.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM projectmembers WHERE id = ?")) {
-                statement.setLong(1, id);
-                try (ResultSet rs = statement.executeQuery()) {
-                    if (rs.next()) {
-                        return mapRowToProjectMember(rs);
-                    } else {
-                        return null;
-                    }
-                }
-            }
-        }
-    }
-
-    private Member mapRowToProjectMember(ResultSet rs) throws SQLException {
-        Member member = new Member();
-        member.setId(rs.getLong("id"));
-        member.setFirstName(rs.getString("first_name"));
-        member.setLastName(rs.getString("last_name"));
-        member.setEmail(rs.getString("email"));
-        return member;
-    }
-
-    public List<Member> list() throws SQLException {
-        try (Connection connection = dataSource.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement("select * from projectmembers")) {
-                try (ResultSet rs = statement.executeQuery()) {
-                    List<Member> members = new ArrayList<>();
-                    while (rs.next()) {
-                        members.add(mapRowToProjectMember(rs));
-                    }
-                    return members;
-                }
-            }
-        }
-    }
 }

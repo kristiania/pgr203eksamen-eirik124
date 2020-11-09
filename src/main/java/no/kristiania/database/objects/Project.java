@@ -1,4 +1,4 @@
-package no.kristiania.database;
+package no.kristiania.database.objects;
 
 public class Project {
     private String name;

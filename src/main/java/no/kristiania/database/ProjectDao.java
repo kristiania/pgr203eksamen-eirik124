@@ -1,51 +1,39 @@
 package no.kristiania.database;
 
+import no.kristiania.database.objects.Project;
+
 import javax.sql.DataSource;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
-public class ProjectDao {
-    private final DataSource dataSource;
+public class ProjectDao extends AbstractDao<Project> {
+
 
     public ProjectDao(DataSource dataSource) {
-        this.dataSource = dataSource;
+        super(dataSource);
     }
 
-    public List<Project> list() throws SQLException {
-        try (Connection connection = dataSource.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement("select * from project")) {
-                try (ResultSet rs = statement.executeQuery()) {
-                    List<Project> projects = new ArrayList<>();
-                    while (rs.next()) {
-                        projects.add(mapRowToProject(rs));
-                    }
-                    return projects;
-                }
-            }
-        }
+    @Override
+    public void insertData(Project project, PreparedStatement sqlStatement) throws SQLException {
+        sqlStatement.setString(1, project.getName());
     }
 
-    private Project mapRowToProject(ResultSet rs) throws SQLException {
+    @Override
+    protected Project readObject(ResultSet rs) throws SQLException {
         Project project = new Project();
         project.setId(rs.getLong("id"));
         project.setName(rs.getString("p_name"));
         return project;
     }
 
-    public void insert(Project project) throws SQLException {
-        try (Connection connection = dataSource.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement("INSERT INTO project (p_name) VALUES (?)",
-                    Statement.RETURN_GENERATED_KEYS
-            )) {
-                statement.setString(1, project.getName());
-                statement.executeUpdate();
-                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-                    generatedKeys.next();
-                    project.setId(generatedKeys.getLong("id"));
-                }
-            }
-        }
+    public long insert(Project project) throws SQLException {
+        return insert(project, "INSERT INTO project (p_name) VALUES (?)");
+    }
+
+    public List<Project> listAllElements() throws SQLException {
+        return listAllElements(
+                "select * from project"
+        );
     }
 
     public void updateName(String name, long id) throws SQLException {
@@ -54,21 +42,6 @@ public class ProjectDao {
                 statement.setString(1,name);
                 statement.setLong(2,id);
                 statement.executeUpdate();
-            }
-        }
-    }
-
-    public Project retrieve(long id) throws SQLException {
-        try (Connection connection = dataSource.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM project WHERE id = ?")) {
-                statement.setLong(1, id);
-                try (ResultSet rs = statement.executeQuery()) {
-                    if (rs.next()) {
-                        return mapRowToProject(rs);
-                    } else {
-                        return null;
-                    }
-                }
             }
         }
     }

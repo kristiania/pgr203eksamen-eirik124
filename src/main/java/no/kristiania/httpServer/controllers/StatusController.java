@@ -43,7 +43,7 @@ public class StatusController implements HttpController {
     }
 
     public String getBody() throws SQLException {
-        return dao.list().stream()
+        return dao.listAllElements().stream()
                 .map(dao -> "<option name='" + dao.getId() + "' value='" + dao.getId() + "' id='" + dao.getId() + "'>" + dao.getStatus() + "</option> ")
                 .collect(Collectors.joining(""));
     }

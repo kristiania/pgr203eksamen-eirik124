@@ -1,6 +1,6 @@
 package no.kristiania.httpServer.controllers;
 
-import no.kristiania.database.Member;
+import no.kristiania.database.objects.Member;
 import no.kristiania.database.MemberDao;
 import no.kristiania.httpServer.HttpMessage;
 import no.kristiania.httpServer.QueryString;
@@ -92,13 +92,13 @@ public class MemberController implements HttpController {
     }
 
     public String getBody() throws SQLException {
-        return dao.list().stream()
+        return dao.listAllElements().stream()
                 .map(dao -> "<li>" + dao.getFirstName() + " " + dao.getLastName() + ", " + dao.getEmail() + "</li>")
                 .collect(Collectors.joining(""));
     }
 
     public String getBodyList() throws SQLException {
-        return dao.list().stream()
+        return dao.listAllElements().stream()
                 .map(dao -> "<option value='" + dao.getId() + "'>" + dao.getFirstName() + " " + dao.getLastName() + "</option>")
                 .collect(Collectors.joining(""));
     }
