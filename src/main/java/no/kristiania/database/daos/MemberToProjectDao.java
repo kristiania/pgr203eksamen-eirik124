@@ -1,6 +1,5 @@
 package no.kristiania.database.daos;
 
-import no.kristiania.database.daos.AbstractDao;
 import no.kristiania.database.objects.MemberToProject;
 
 import javax.sql.DataSource;
@@ -62,10 +61,17 @@ public class MemberToProjectDao extends AbstractDao<MemberToProject> {
         }
     }
 
+    public List<MemberToProject> filter(int status) throws SQLException {
+        return filter(
+                status, "SELECT task.id, task.name, status.status, project.p_name, task_name, project_name, projectmember_name, description, projectmembers.first_name, projectmembers.last_name, status_id FROM task INNER JOIN projectmember_to_project ON  projectmember_to_project.task_name = task.id INNER JOIN project ON projectmember_to_project.project_name = project.id INNER JOIN projectmembers ON projectmember_to_project.projectmember_name = projectmembers.id INNER JOIN status ON projectmember_to_project.status_id = status.id WHERE status_id =?"
+        );
+    }
+
 
     public List<MemberToProject> listAllElements() throws SQLException {
       return listAllElements(
               "SELECT task.id, task.name, status.status, project.p_name, task_name, project_name, projectmember_name, description, projectmembers.first_name, projectmembers.last_name, status_id FROM task INNER JOIN projectmember_to_project ON  projectmember_to_project.task_name = task.id INNER JOIN project ON projectmember_to_project.project_name = project.id INNER JOIN projectmembers ON projectmember_to_project.projectmember_name = projectmembers.id INNER JOIN status ON projectmember_to_project.status_id = status.id"
       );
     }
+
 }

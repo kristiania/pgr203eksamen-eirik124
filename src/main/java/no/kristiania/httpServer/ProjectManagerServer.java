@@ -50,6 +50,7 @@ public class ProjectManagerServer {
         server.addController("/api/updateTask", new TaskController(taskDao));
         server.addController("/api/assignToProject", new AssignToProjectController(memberToProjectDao));
         server.addController("/api/assignedProjects", new AssignToProjectController(memberToProjectDao));
+        server.addController("/api/filterByStatus", new FilterController(new MemberToProjectDao(dataSource)));
         server.addController("/api/updateStatus", new AssignToProjectController(memberToProjectDao));
         server.addController("/api/deleteAssignment", new AssignToProjectController(memberToProjectDao));
         server.addController("/api/fetchStatus", new StatusController(statusDao));

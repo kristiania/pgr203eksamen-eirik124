@@ -3,17 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/assignedProject.css">
     <title>Display And Filter Assigned Projects | Project Manager</title>
 </head>
 <body>
 <h3>Select filter</h3>
-<form method="post" action="/api/filterAssignedProjects">
-    <select></select>
+<form method="post" action="/api/filterByStatus">
+    <select id="status-selector" name="statusFilter"></select>
+    <button>Filter</button>
 </form>
 <h3>Display Assigned projects by filter</h3>
+<div id="filtered-container"></div>
 <br>
 <ul>
     <li><a href="index.html">Return to home page</a></li>
 </ul>
 </body>
+<script>
+    fetch("/api/fetchStatus")
+        .then(function(response) {
+            return response.text();
+        }).then(function(text) {
+        console.log(text);
+        document.getElementById("status-selector").innerHTML = text;
+    });
+
+    fetch("/api/filterByStatus")
+        .then(function(result) {
+            return result.text();
+        })
+        .then(function(text) {
+            document.getElementById("filtered-container").innerHTML = text;
+        });
+</script>
 </html>

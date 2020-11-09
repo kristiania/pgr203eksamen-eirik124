@@ -44,4 +44,21 @@ public abstract class AbstractDao<T> {
     }
 
     protected abstract T readObject(ResultSet rs) throws SQLException;
+
+    public List<T> filter(int taskStatus, String sql) throws SQLException {
+        try (Connection conn = dataSource.getConnection()) {
+            try (PreparedStatement statement = conn.prepareStatement(sql)) {
+                statement.setInt(1,taskStatus);
+                statement.executeQuery();
+                try (ResultSet rs = statement.executeQuery()) {
+                    List<T> result = new ArrayList<>();
+
+                    while (rs.next()) {
+                        result.add(readObject(rs));
+                    }
+                    return result;
+                }
+            }
+        }
+    }
 }
