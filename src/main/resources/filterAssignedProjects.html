@@ -28,6 +28,21 @@
         document.getElementById("status-selector").innerHTML = text;
     });
 
+    fetch("/api/fetchStatus")
+        .then(function(response) {
+            return response.text();
+        }).then(function(text) {
+        console.log(text);
+        const statusUpdate = document.querySelectorAll(
+            ".status_update"
+        );
+
+        [].forEach.call(statusUpdate, function (statusUpdate) {
+            statusUpdate.innerHTML = text;
+        });
+
+    });
+
     fetch("/api/filterByStatus")
         .then(function(result) {
             return result.text();
